@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Números en Inglés</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1b2a41">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Números">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Un cartel con el número y, debajo, el renglón para escribirlo en inglés. */
+:root{
+  --paper:#f3efe6; --page:#fffdf8; --ink:#1b2a41; --muted:#5f6878; --line:#d9d2c3;
+  --sign:#1b2a41; --sign-ink:#fff6dc; --accent:#e0902b; --accent-ink:#1b2a41;
+  --ok:#1a7a4c; --ok-bg:#e2f3e9; --bad:#b83a2c; --bad-bg:#fbe7e3;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#10161f; --page:#18212e; --ink:#e9edf3; --muted:#9aa5b5; --line:#2c3848;
+  --sign:#fff3d6; --sign-ink:#1b2a41; --accent:#f2a744; --accent-ink:#1b2a41;
+  --ok:#5fcf95; --ok-bg:#163527; --bad:#ff8a7a; --bad-bg:#3c1f1c; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --paper:#10161f; --page:#18212e; --ink:#e9edf3; --muted:#9aa5b5; --line:#2c3848;
+  --sign:#fff3d6; --sign-ink:#1b2a41; --accent:#f2a744; --accent-ink:#1b2a41;
+  --ok:#5fcf95; --ok-bg:#163527; --bad:#ff8a7a; --bad-bg:#3c1f1c; color-scheme:dark }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0; min-height:100%}
+body{background:var(--paper); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.5; -webkit-tap-highlight-color:transparent}
+#app{max-width:640px; margin:0 auto; padding-block:max(18px, env(safe-area-inset-top,0px)) 48px; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
+button{font:inherit; color:inherit; cursor:pointer}
+button:focus-visible, textarea:focus-visible, select:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+h1,h2,h3{font-family:var(--display); margin:0; text-wrap:balance}
+.label{font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+
+/* ---------- Inicio ---------- */
+.cover{padding-bottom:16px; border-bottom:2px solid var(--ink)}
+.cover h1{font-size:clamp(36px, 10vw, 56px); font-weight:800; line-height:.95; letter-spacing:-.02em; margin-top:6px}
+.cover h1 span{color:var(--accent)}
+.cover p{margin:10px 0 0; color:var(--muted); max-width:40ch}
+.modes{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px}
+.mode{border:2px solid var(--line); background:var(--page); border-radius:12px; padding:12px; text-align:left; display:flex; flex-direction:column; gap:2px}
+.mode b{font-family:var(--display); font-size:17px; line-height:1.15}
+.mode small{color:var(--muted); font-size:13px; line-height:1.3}
+.mode[aria-pressed="true"]{border-color:var(--ink); box-shadow:inset 0 0 0 1px var(--ink)}
+.toolbar{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
+.chip{border:1.5px solid var(--line); background:var(--page); border-radius:999px; padding:7px 14px; font-size:14px; display:inline-flex; gap:6px; align-items:center}
+.chip svg{width:16px; height:16px}
+.voicepanel{margin-top:10px; background:var(--page); border:1.5px solid var(--line); border-radius:10px; padding:14px; display:grid; gap:8px}
+.voicepanel select{font:inherit; font-size:16px; padding:10px; border:1.5px solid var(--line); border-radius:8px; background:var(--paper); color:var(--ink); width:100%}
+.voicepanel input[type=range]{width:100%; accent-color:var(--accent)}
+.vp-help{font-size:13px; color:var(--muted)}
+.levels{display:grid; gap:10px; margin-top:18px}
+.lv{display:flex; align-items:center; gap:14px; text-align:left; background:var(--page); border:2px solid var(--line); border-radius:12px; padding:14px 16px; transition:border-color .15s, transform .15s}
+.lv:hover{border-color:var(--ink)}
+.lv:active{transform:scale(.99)}
+.lv-n{width:42px; height:42px; flex:none; display:grid; place-items:center; border-radius:10px; background:var(--ink); color:var(--page); font-family:var(--mono); font-weight:700}
+.lv-t{flex:1; min-width:0}
+.lv-t b{display:block; font-family:var(--display); font-size:19px; line-height:1.15}
+.lv-t small{color:var(--muted); font-family:var(--mono); font-size:12.5px}
+.stars{font-size:17px; letter-spacing:2px; color:var(--line); flex:none}
+.stars i{font-style:normal} .stars i.on{color:var(--accent)}
+.learn{margin-top:12px; width:100%; background:var(--ink); color:var(--page); border:0; border-radius:12px; padding:16px; text-align:left; display:flex; flex-direction:column}
+.learn b{font-family:var(--display); font-size:19px}
+.learn span{opacity:.75; font-size:14px}
+.foot{margin-top:20px; color:var(--muted); font-size:13px}
+
+/* ---------- Juego ---------- */
+.bar{display:flex; align-items:center; gap:12px}
+.icon-btn{background:var(--page); border:1.5px solid var(--line); border-radius:999px; width:42px; height:42px; display:grid; place-items:center; flex:none}
+.icon-btn svg{width:20px; height:20px}
+.track{flex:1; height:10px; background:var(--line); border-radius:999px; overflow:hidden}
+.track div{height:100%; background:var(--accent); width:0; transition:width .3s ease}
+.count{font-family:var(--mono); font-weight:700; font-size:14px; min-width:44px; text-align:right}
+
+.board{margin-top:22px; position:relative}
+.board::before,.board::after{content:""; position:absolute; top:-14px; width:2px; height:16px; background:var(--muted); opacity:.6}
+.board::before{left:22%} .board::after{right:22%}
+.sign{
+  position:relative; background:var(--sign); color:var(--sign-ink); border-radius:16px; padding:22px 18px 26px;
+  text-align:center; box-shadow:0 10px 0 -4px color-mix(in srgb, var(--sign) 35%, transparent);
+}
+.sign::before,.sign::after{content:""; position:absolute; top:10px; width:9px; height:9px; border-radius:50%; background:var(--accent)}
+.sign::before{left:calc(22% - 3px)} .sign::after{right:calc(22% - 3px)}
+.sign .label{color:inherit; opacity:.7}
+.big{font-family:var(--display); font-weight:800; line-height:1; letter-spacing:-.02em; margin-top:10px; overflow-wrap:anywhere; font-variant-numeric:tabular-nums}
+.sign .es{margin-top:10px; font-size:14px; opacity:.7}
+.listen-big{display:grid; place-items:center; margin:12px auto 0; width:96px; height:96px; border-radius:50%; border:0; background:var(--accent); color:var(--accent-ink)}
+.listen-big svg{width:44px; height:44px}
+.sound{display:flex; justify-content:center; gap:10px; margin-top:16px}
+.sbtn{display:inline-flex; align-items:center; gap:8px; border:1.5px solid var(--line); background:var(--page); border-radius:999px; padding:9px 16px; font-weight:700; font-size:15px}
+.sbtn svg{width:20px; height:20px}
+
+.write{margin-top:18px; background:var(--page); border-radius:14px; padding:16px 16px 14px; border:1.5px solid var(--line)}
+.write label{display:block}
+.write textarea{
+  display:block; width:100%; margin-top:6px; resize:none; overflow:hidden; border:0; outline:0; background:transparent; color:var(--ink);
+  font-family:var(--body); font-size:22px; line-height:44px; padding:0 2px; min-height:44px;
+  background-image:linear-gradient(to bottom, transparent 41px, var(--ink) 41px, var(--ink) 43px, transparent 43px);
+  background-size:100% 44px;
+}
+.write textarea:focus{background-image:linear-gradient(to bottom, transparent 41px, var(--accent) 41px, var(--accent) 44px, transparent 44px)}
+.write textarea:disabled{opacity:1; -webkit-text-fill-color:var(--ink)}
+.write textarea::placeholder{color:var(--muted); opacity:.55}
+.actions{display:flex; gap:10px; margin-top:14px}
+.go{flex:1; border:0; border-radius:12px; padding:14px 18px; font-weight:700; font-size:17px; background:var(--ink); color:var(--page)}
+.go:disabled{opacity:.4; cursor:not-allowed}
+.ghost{border:1.5px solid var(--line); background:var(--page); border-radius:12px; padding:14px 16px; font-weight:700; font-size:16px; display:inline-flex; align-items:center; gap:6px}
+.ghost svg{width:18px; height:18px}
+
+.fb{margin-top:14px; border-radius:14px; padding:16px; border:2px solid}
+.fb.ok{background:var(--ok-bg); border-color:var(--ok)}
+.fb.bad{background:var(--bad-bg); border-color:var(--bad)}
+.fb h3{font-size:20px; display:flex; align-items:center; gap:8px}
+.fb.ok h3{color:var(--ok)} .fb.bad h3{color:var(--bad)}
+.answer{font-family:var(--display); font-weight:700; font-size:21px; line-height:1.3; margin:8px 0 0; overflow-wrap:anywhere}
+.mine{margin-top:10px; font-size:15px; color:var(--muted)}
+.mine s{color:var(--bad); text-decoration-thickness:2px}
+.alt{margin-top:6px; font-size:14px; color:var(--muted)}
+.notes{margin:10px 0 0; padding-left:20px; font-size:15px}
+.notes li+li{margin-top:4px}
+.fb .sbtn{margin-top:12px}
+
+/* ---------- Resultado ---------- */
+.result{text-align:center; margin-top:28px}
+.result .big{font-size:84px; color:var(--ink)}
+.result .stars{font-size:34px; margin-top:6px}
+.result p{color:var(--muted)}
+.misses{text-align:left; margin-top:18px; background:var(--page); border:1.5px solid var(--line); border-radius:14px; padding:6px 16px}
+.miss{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; padding:10px 0; border-bottom:1px solid var(--line)}
+.miss:last-child{border-bottom:0}
+.miss b{font-family:var(--mono); font-size:15px}
+.miss span{font-size:15px}
+.miss .icon-btn{width:36px; height:36px}
+.res-actions{display:flex; gap:10px; margin-top:18px}
+
+/* ---------- Reglas ---------- */
+.rules h2{font-size:clamp(28px,7vw,38px); font-weight:800; margin-top:18px}
+.rules h3{font-size:20px; margin-top:26px}
+.rules p{margin:6px 0 0}
+.tbl{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:6px; margin-top:10px}
+.tbl.wide{grid-template-columns:1fr}
+.say{display:flex; gap:8px; align-items:center; text-align:left; background:var(--page); border:1.5px solid var(--line); border-radius:10px; padding:8px 10px; width:100%}
+.say b{font-family:var(--mono); min-width:2.2em}
+.tbl.wide .say b{min-width:5.4em}
+.say span{flex:1; min-width:0; overflow-wrap:break-word}
+.say svg{width:16px; height:16px; flex:none; color:var(--muted)}
+.tip{margin-top:10px; border-left:4px solid var(--accent); background:var(--page); padding:10px 14px; border-radius:0 10px 10px 0; font-size:15px}
+
+@media (prefers-reduced-motion: reduce){ *{transition:none!important; animation:none!important} }
+@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.pop{animation:pop .25s ease}
+</style>
+</head>
+<body>
+<main id="app" aria-live="polite"></main>
+<script src="numeros.js"></script>
+<script>
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* Guardado */
+const KEY="numeros-ingles";
+let save={best:{},mode:"ver",rate:0.9,voice:"",muted:false};
+try{ Object.assign(save, JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){}
+function store(){ try{ localStorage.setItem(KEY, JSON.stringify(save)); }catch(e){} }
+
+/* Voz */
+const TTS="speechSynthesis" in window;
+let voices=[];
+const REGION={GB:"Reino Unido",US:"EE. UU.",AU:"Australia",IE:"Irlanda",CA:"Canadá",IN:"India",NZ:"Nueva Zelanda",ZA:"Sudáfrica"};
+function englishVoices(){
+  const en=voices.filter(v=>/^en/i.test(v.lang));
+  const rank=v=>(/GB/i.test(v.lang)?0:/US/i.test(v.lang)?1:2);
+  return en.sort((a,b)=>rank(a)-rank(b)||a.name.localeCompare(b.name));
+}
+function voiceLabel(v){
+  const reg=(v.lang.split(/[-_]/)[1]||"").toUpperCase();
+  const name=v.name.replace(/\s*[-–(].*$/,"").replace(/^(Microsoft|Google|Apple)\s+/i,"").trim()||v.name;
+  return `${name} · ${REGION[reg]||reg||"inglés"}`;
+}
+function currentVoice(){
+  const en=englishVoices();
+  return en.find(v=>v.voiceURI===save.voice)||en.find(v=>/GB/i.test(v.lang))||en[0]||null;
+}
+function loadVoices(){ if(!TTS) return; voices=speechSynthesis.getVoices(); fillVoices(); }
+if(TTS){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+function speak(text,slow=false){
+  if(!TTS) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  const v=currentVoice();
+  if(v) u.voice=v; u.lang=v?v.lang:"en-GB";
+  u.rate=slow?Math.max(0.45,save.rate*0.6):save.rate;
+  speechSynthesis.speak(u);
+}
+function fillVoices(){
+  const sel=document.getElementById("voice"); if(sel){
+    const en=englishVoices(), cur=currentVoice();
+    sel.innerHTML=en.length?en.map(v=>`<option value="${esc(v.voiceURI)}"${cur&&v.voiceURI===cur.voiceURI?" selected":""}>${esc(voiceLabel(v))}</option>`).join(""):'<option value="">No hay voces en inglés en este teléfono</option>';
+  }
+  const chip=document.getElementById("voicechip-name"); if(chip){ const cur=currentVoice(); chip.textContent=cur?voiceLabel(cur).split(" · ")[0]:"sin voz"; }
+}
+
+/* Sonidos de acierto y error */
+let actx=null;
+function beep(ok){
+  if(save.muted) return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const notes=ok?[660,880]:[220,180];
+    notes.forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain(),t=actx.currentTime+i*.09;
+      o.type=ok?"triangle":"square"; o.frequency.value=f; g.gain.setValueAtTime(.0001,t);
+      g.gain.exponentialRampToValueAtTime(ok?.18:.06,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+.16);
+      o.connect(g).connect(actx.destination); o.start(t); o.stop(t+.18);});
+  }catch(e){}
+}
+
+const ICON={
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  spk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13"/></svg>',
+  slow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="12" r="5"/><path d="M13 12a2 2 0 102-2M3 19h15a3 3 0 003-3M6 19V9M4 7l2 2 2-2"/></svg>',
+  bulb:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0012 3z"/></svg>',
+  mute:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z" fill="currentColor"/><path d="M22 9l-6 6M16 9l6 6"/></svg>',
+  check:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>',
+  cross:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+};
+const starsHTML=n=>{let s="";for(let i=0;i<3;i++) s+=`<i class="${i<n?"on":""}">★</i>`;return s;};
+const starsFor=score=>score>=10?3:score>=8?2:score>=6?1:0;
+
+/* ===================== Inicio ===================== */
+function home(){
+  if(TTS) speechSynthesis.cancel();
+  const m=save.mode;
+  app.innerHTML=`
+  <header class="cover">
+    <div class="label">Practicar escribiendo · del 0 al 1,000,000</div>
+    <h1>Números<br><span>en Inglés</span></h1>
+    <p>Aparece un cartel con un número y abajo lo escribís en inglés. Tocá el parlante para escuchar cómo suena.</p>
+  </header>
+  <div class="modes" role="group" aria-label="Forma de jugar">
+    <button class="mode" data-mode="ver" aria-pressed="${m==="ver"}"><b>Ver y escribir</b><small>Ves el número, lo escribís en palabras</small></button>
+    <button class="mode" data-mode="dictado" aria-pressed="${m==="dictado"}"><b>Dictado</b><small>Lo escuchás y lo escribís con cifras</small></button>
+  </div>
+  <div class="toolbar">
+    ${TTS?`<button class="chip" id="voicechip" aria-expanded="false">${ICON.spk} Voz: <span id="voicechip-name">…</span></button>`:'<span class="chip">Este navegador no tiene voz</span>'}
+    <button class="chip" id="mute" aria-pressed="${save.muted}">${save.muted?ICON.mute+" Sin sonidos":ICON.spk+" Sonidos"}</button>
+  </div>
+  <div class="voicepanel" id="voicepanel" hidden>
+    <label class="label" for="voice">Voz en inglés</label>
+    <select id="voice"></select>
+    <label class="label" for="rate">Velocidad</label>
+    <input type="range" id="rate" min="0.6" max="1.2" step="0.05" value="${save.rate}">
+    <button class="ghost" id="trytts">${ICON.spk} Probar: 1,234</button>
+    <span class="vp-help">¿Pocas voces? En el celular se agregan desde Ajustes → Texto a voz.</span>
+  </div>
+  <div class="levels">
+    ${NUM.LEVELS.map(L=>{const b=save.best[m+L.id]; return `
+      <button class="lv" data-lv="${L.id}">
+        <span class="lv-n">${L.id}</span>
+        <span class="lv-t"><b>${L.name}</b><small>${L.short}</small></span>
+        <span class="stars" aria-label="${b!=null?"Mejor: "+b+" de 10":"Sin jugar"}">${starsHTML(b!=null?starsFor(b):0)}</span>
+      </button>`;}).join("")}
+  </div>
+  <button class="learn" id="learn"><b>Cómo se escriben</b><span>Las reglas con ejemplos para escuchar</span></button>
+  <p class="foot">Rondas de 10 números. Vale escribir con o sin «and» y con o sin guion (twenty-one o twenty one), pero te avisa la forma correcta. Funciona sin internet una vez instalada.</p>`;
+  app.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{save.mode=b.dataset.mode;store();home();});
+  app.querySelectorAll(".lv").forEach(b=>b.onclick=()=>start(+b.dataset.lv));
+  document.getElementById("learn").onclick=rules;
+  document.getElementById("mute").onclick=()=>{save.muted=!save.muted;store();home();};
+  const chip=document.getElementById("voicechip");
+  if(chip){
+    const panel=document.getElementById("voicepanel");
+    chip.onclick=()=>{panel.hidden=!panel.hidden; chip.setAttribute("aria-expanded",!panel.hidden);};
+    document.getElementById("voice").onchange=e=>{save.voice=e.target.value;store();fillVoices();speak("one thousand two hundred and thirty-four");};
+    document.getElementById("rate").oninput=e=>{save.rate=+e.target.value;store();};
+    document.getElementById("trytts").onclick=()=>speak("one thousand two hundred and thirty-four");
+    fillVoices();
+  }
+  window.scrollTo(0,0);
+}
+
+/* ===================== Juego ===================== */
+let G=null;
+function start(level){
+  G={level, mode:save.mode, nums:NUM.round(level), i:0, score:0, misses:[], hinted:false, answered:false};
+  card();
+}
+function bigSize(n){ const len=NUM.fmt(n).length; return len<=2?"clamp(96px,30vw,150px)":len<=5?"clamp(80px,24vw,124px)":len<=7?"clamp(60px,17vw,96px)":"clamp(46px,13vw,78px)"; }
+function card(){
+  const n=G.nums[G.i], L=NUM.LEVELS.find(l=>l.id===G.level), dict=G.mode==="dictado";
+  G.hinted=false; G.answered=false;
+  app.innerHTML=`
+  <div class="bar">
+    <button class="icon-btn" id="back" aria-label="Volver al inicio">${ICON.back}</button>
+    <div class="track" aria-hidden="true"><div style="width:${G.i/G.nums.length*100}%"></div></div>
+    <span class="count">${G.i+1}/${G.nums.length}</span>
+  </div>
+  <div class="board pop">
+    <div class="sign">
+      <div class="label">${esc(L.name)} · ${dict?"Escuchá":"Escribilo en inglés"}</div>
+      ${dict
+        ?`<button class="listen-big" id="say" aria-label="Escuchar el número">${ICON.spk}</button>
+          <div class="es">Escribí el número con cifras</div>`
+        :`<div class="big" style="font-size:${bigSize(n)}">${NUM.fmt(n)}</div>`}
+    </div>
+  </div>
+  <div class="sound">
+    ${dict?"":`<button class="sbtn" id="say">${ICON.spk} Escuchar</button>`}
+    <button class="sbtn" id="slow">${ICON.slow} Lento</button>
+  </div>
+  <form class="write" id="form" autocomplete="off">
+    <label class="label" for="ans">${dict?"El número":"En inglés"}</label>
+    <textarea id="ans" rows="1" ${dict?'inputmode="numeric" placeholder="1,234"':'placeholder="Escribí acá…"'} autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" enterkeyhint="done"></textarea>
+    <div class="actions">
+      ${dict?"":`<button type="button" class="ghost" id="hint">${ICON.bulb} Pista</button>`}
+      <button class="go" id="ok" disabled>Comprobar</button>
+    </div>
+  </form>
+  <div id="fb"></div>`;
+  const ans=document.getElementById("ans"), okb=document.getElementById("ok");
+  const grow=()=>{ ans.style.height="auto"; ans.style.height=Math.max(44, Math.ceil(ans.scrollHeight/44)*44)+"px"; };
+  ans.oninput=()=>{ okb.disabled=!ans.value.trim(); grow(); };
+  ans.onkeydown=e=>{ if(e.key==="Enter"){ e.preventDefault(); if(G.answered) next(); else if(ans.value.trim()) submit(); } };
+  document.getElementById("form").onsubmit=e=>{ e.preventDefault(); if(G.answered) next(); else if(ans.value.trim()) submit(); };
+  document.getElementById("back").onclick=home;
+  document.getElementById("say").onclick=()=>speak(NUM.toWords(n));
+  document.getElementById("slow").onclick=()=>speak(NUM.toWords(n),true);
+  const hb=document.getElementById("hint");
+  if(hb) hb.onclick=()=>{
+    const h=NUM.hint(n, ans.value);
+    G.hinted=true; ans.value=h.text; okb.disabled=!ans.value.trim(); grow(); ans.focus();
+    ans.setSelectionRange(ans.value.length, ans.value.length);
+  };
+  if(dict) setTimeout(()=>speak(NUM.toWords(n)),250);
+  ans.focus({preventScroll:true});
+  window.scrollTo(0,0);
+}
+function submit(){
+  const n=G.nums[G.i], dict=G.mode==="dictado", ans=document.getElementById("ans");
+  const r=dict?NUM.checkDigits(n, ans.value):NUM.check(n, ans.value);
+  G.answered=true;
+  ans.disabled=true;
+  const point=r.ok && !G.hinted;
+  if(point) G.score++; else G.misses.push({n, mine:ans.value, hinted:r.ok&&G.hinted});
+  beep(r.ok);
+  const words=NUM.toWords(n), us=NUM.toWordsUS(n);
+  let mine="";
+  if(!r.ok && !dict){
+    const d=NUM.diff(n, ans.value);
+    mine=`<div class="mine">Escribiste: ${d.mine.map(t=>t.ok?esc(t.w):`<s>${esc(t.w)}</s>`).join(" ")||"—"}</div>`;
+  } else if(!r.ok && dict){
+    mine=`<div class="mine">Escribiste: <s>${esc(ans.value)}</s></div>`;
+  }
+  const notes=[...r.notes];
+  if(r.ok && G.hinted) notes.unshift("Bien, pero con pista no suma punto.");
+  document.getElementById("fb").innerHTML=`
+    <div class="fb ${r.ok?"ok":"bad"} pop" role="status">
+      <h3>${r.ok?ICON.check+" ¡Correcto!":ICON.cross+" Así se escribe"}</h3>
+      ${dict?`<div class="answer">${NUM.fmt(n)}</div><div class="alt">${esc(words)}</div>`:`<div class="answer">${esc(words)}</div>`}
+      ${!dict && us!==words?`<div class="alt">En EE. UU. también: ${esc(us)}</div>`:""}
+      ${mine}
+      ${notes.length?`<ul class="notes">${notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+      <button class="sbtn" id="again">${ICON.spk} Escuchar de nuevo</button>
+    </div>`;
+  document.getElementById("again").onclick=()=>speak(words);
+  const okb=document.getElementById("ok"); okb.disabled=false; okb.textContent=G.i+1<G.nums.length?"Siguiente":"Ver resultado";
+  const hb=document.getElementById("hint"); if(hb) hb.hidden=true;
+  okb.focus({preventScroll:true});
+  setTimeout(()=>speak(words), save.muted?0:320);
+  document.getElementById("fb").scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+function next(){ G.i++; if(G.i<G.nums.length) card(); else result(); }
+
+/* ===================== Resultado ===================== */
+function result(){
+  const key=G.mode+G.level, prev=save.best[key];
+  if(prev==null || G.score>prev){ save.best[key]=G.score; store(); }
+  const s=starsFor(G.score);
+  const msg=G.score===10?"¡Perfecto! Ni un error.":G.score>=8?"¡Muy bien!":G.score>=6?"Bien, vas mejorando.":"Repasá los que fallaste y probá otra vez.";
+  app.innerHTML=`
+  <div class="bar"><button class="icon-btn" id="back" aria-label="Volver al inicio">${ICON.back}</button><div class="track"><div style="width:100%"></div></div><span class="count">fin</span></div>
+  <div class="result pop">
+    <div class="label">${esc(NUM.LEVELS.find(l=>l.id===G.level).name)} · ${G.mode==="dictado"?"Dictado":"Ver y escribir"}</div>
+    <div class="big">${G.score}<span style="font-size:.4em;color:var(--muted)">/${G.nums.length}</span></div>
+    <div class="stars">${starsHTML(s)}</div>
+    <p>${msg}</p>
+  </div>
+  ${G.misses.length?`<div class="misses">
+    <div class="label" style="padding-top:10px">Para repasar</div>
+    ${G.misses.map((m,k)=>`<div class="miss"><b>${NUM.fmt(m.n)}</b><span>${esc(NUM.toWords(m.n))}${m.hinted?' <small style="color:var(--muted)">(con pista)</small>':""}</span><button class="icon-btn" data-k="${k}" aria-label="Escuchar ${NUM.fmt(m.n)}">${ICON.spk}</button></div>`).join("")}
+  </div>`:""}
+  <div class="res-actions"><button class="ghost" id="home" style="flex:1;justify-content:center">Inicio</button><button class="go" id="again">Otra ronda</button></div>`;
+  document.getElementById("back").onclick=home;
+  document.getElementById("home").onclick=home;
+  document.getElementById("again").onclick=()=>start(G.level);
+  app.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>speak(NUM.toWords(G.misses[+b.dataset.k].n)));
+  window.scrollTo(0,0);
+}
+
+/* ===================== Reglas ===================== */
+function rules(){
+  const say=(n,label)=>`<button class="say" data-say="${esc(NUM.toWords(n))}"><b>${label??NUM.fmt(n)}</b><span>${esc(NUM.toWords(n))}</span>${ICON.spk}</button>`;
+  const range=(a,b)=>Array.from({length:b-a+1},(_,i)=>a+i);
+  app.innerHTML=`
+  <div class="bar"><button class="icon-btn" id="back" aria-label="Volver al inicio">${ICON.back}</button><span class="label">Tocá cualquier número para escucharlo</span></div>
+  <div class="rules">
+    <h2>Cómo se escriben</h2>
+    <h3>Del 0 al 12: de memoria</h3>
+    <div class="tbl">${range(0,12).map(n=>say(n)).join("")}</div>
+    <h3>Del 13 al 19: terminan en <i>-teen</i></h3>
+    <div class="tbl">${range(13,19).map(n=>say(n)).join("")}</div>
+    <div class="tip">Ojo: <b>thir</b>teen, <b>fif</b>teen y eigh<b>teen</b> (una sola t).</div>
+    <h3>Las decenas: terminan en <i>-ty</i></h3>
+    <div class="tbl">${[20,30,40,50,60,70,80,90].map(n=>say(n)).join("")}</div>
+    <div class="tip"><b>forty</b> va sin u (aunque four lleva u). Escuchá la diferencia: thir<b>teen</b> (13) se acentúa al final, <b>thir</b>ty (30) al principio.</div>
+    <h3>Del 21 al 99: con guion</h3>
+    <div class="tbl wide">${[21,35,48,99].map(n=>say(n)).join("")}</div>
+    <h3>Cientos: <i>hundred</i> + and</h3>
+    <div class="tbl wide">${[100,105,250,999].map(n=>say(n)).join("")}</div>
+    <div class="tip">Después de un número, <b>hundred</b>, <b>thousand</b> y <b>million</b> van sin s: two hundred, nunca two hundreds. En inglés británico se pone <b>and</b> después de hundred; en EE. UU. muchas veces no (one hundred five). Las dos valen.</div>
+    <h3>Miles: <i>thousand</i></h3>
+    <div class="tbl wide">${[1000,1005,2014,10000,45600,99999].map(n=>say(n)).join("")}</div>
+    <div class="tip">Si después de los miles vienen menos de 100, va <b>and</b>: two thousand <b>and</b> fourteen.</div>
+    <h3>Cientos de mil y el millón</h3>
+    <div class="tbl wide">${[100000,250075,999999,1000000].map(n=>say(n)).join("")}</div>
+    <div class="tip">En inglés los miles se separan con <b>coma</b> y no con punto: 1,000,000 (nosotros escribimos 1.000.000). «a hundred», «a thousand» y «a million» también valen.</div>
+  </div>
+  <button class="go" id="play" style="width:100%;margin-top:22px">Empezar a practicar</button>`;
+  document.getElementById("back").onclick=home;
+  document.getElementById("play").onclick=home;
+  app.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak(b.dataset.say));
+  window.scrollTo(0,0);
+}
+
+home();
+
+if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
